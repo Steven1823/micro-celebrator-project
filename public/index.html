@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Micro-Milestone Celebrator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎉 Micro-Milestone Celebrator</h1>
+        </header>
+
+        <!-- Setup Form (shown first) -->
+        <div id="setupForm" class="setup-form">
+            <h2>Setup Your Celebrations</h2>
+            <p>Enter your details to get started with task celebrations!</p>
+            
+            <form id="userSetupForm">
+                <div class="form-group">
+                    <label for="userEmail">Email Address *</label>
+                    <input type="email" id="userEmail" required placeholder="your@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="slackWebhook">Slack Webhook URL *</label>
+                    <input type="url" id="slackWebhook" required placeholder="https://hooks.slack.com/services/...">
+                    <small>Get your webhook URL from Slack's Incoming Webhooks app</small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Start Celebrating!</button>
+            </form>
+        </div>
+
+        <!-- Main App (hidden initially) -->
+        <div id="mainApp" class="main-app" style="display: none;">
+            <div class="stats">
+                <span id="doneToday">Done today: 0</span>
+            </div>
+
+            <div class="task-input">
+                <form id="taskForm">
+                    <div class="input-group">
+                        <input type="text" id="taskTitle" placeholder="Enter task title..." required>
+                        <input type="date" id="taskDueDate" placeholder="Due date (optional)">
+                        <button type="submit" class="btn btn-add">Add Task</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="todo">Todo</button>
+                <button class="filter-btn" data-filter="done">Done</button>
+            </div>
+
+            <div id="taskList" class="task-list">
+                <!-- Tasks will be dynamically added here -->
+            </div>
+        </div>
+
+        <footer>
+            <p>v1.0.0</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
