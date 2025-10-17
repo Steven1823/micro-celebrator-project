@@ -25,7 +25,7 @@ header {
   margin-bottom: 40px;
 }
 
-/* Added header-content to display title and user profile side by side */
+/* Updated header styling for Real Biz Digital branding */
 .header-content {
   display: flex;
   justify-content: space-between;
@@ -33,14 +33,19 @@ header {
   gap: 20px;
 }
 
-header h1 {
+.logo-section h1 {
   font-size: 2.5rem;
   font-weight: 700;
   color: #60a5fa;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
-/* Added user-profile styling */
+.tagline {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
 .user-profile {
   display: flex;
   align-items: center;
@@ -49,6 +54,12 @@ header h1 {
   padding: 12px 16px;
   border-radius: 8px;
   border: 1px solid #334155;
+}
+
+.company-name {
+  color: #60a5fa;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .user-name {
@@ -134,6 +145,61 @@ header h1 {
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Added team members styling */
+.team-members-container {
+  background: #0f172a;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  margin-bottom: 12px;
+}
+
+.team-member-input {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.team-member-input:last-child {
+  margin-bottom: 0;
+}
+
+.team-member-input input {
+  flex: 1;
+  padding: 10px 12px;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.team-member-input input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+
+.btn-secondary {
+  background: #6366f1;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4f46e5;
+}
+
+.btn-remove-member {
+  background: #ef4444;
+  color: white;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.btn-remove-member:hover {
+  background: #dc2626;
 }
 
 .btn {
@@ -319,11 +385,10 @@ footer {
     padding: 16px;
   }
 
-  header h1 {
+  .logo-section h1 {
     font-size: 2rem;
   }
 
-  /* Stack header content vertically on mobile */
   .header-content {
     flex-direction: column;
     align-items: stretch;
@@ -349,5 +414,13 @@ footer {
 
   .task-actions {
     justify-content: center;
+  }
+
+  .team-member-input {
+    flex-direction: column;
+  }
+
+  .team-member-input .btn-remove-member {
+    width: 100%;
   }
 }

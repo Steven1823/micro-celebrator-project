@@ -1,10 +1,12 @@
-class MicroCelebrator {
+class RealBizDigital {
   constructor() {
     this.tasks = JSON.parse(localStorage.getItem("tasks")) || []
+    this.companyName = localStorage.getItem("companyName") || ""
     this.userName = localStorage.getItem("userName") || ""
     this.userEmail = localStorage.getItem("userEmail") || ""
     this.slackWebhook = localStorage.getItem("slackWebhook") || ""
     this.whatsappNumber = localStorage.getItem("whatsappNumber") || ""
+    this.teamMembers = JSON.parse(localStorage.getItem("teamMembers")) || []
     this.currentFilter = "all"
 
     this.init()
@@ -26,6 +28,7 @@ class MicroCelebrator {
       setupForm.style.display = "none"
       mainApp.style.display = "block"
       userProfile.style.display = "flex"
+      document.getElementById("companyName").textContent = `${this.companyName} -`
       document.getElementById("userName").textContent = `Welcome, ${this.userName}!`
     } else {
       setupForm.style.display = "block"
@@ -49,6 +52,11 @@ class MicroCelebrator {
       this.addTask()
     })
 
+    document.getElementById("addTeamMemberBtn").addEventListener("click", (e) => {
+      e.preventDefault()
+      this.addTeamMemberInput()
+    })
+
     document.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         this.setFilter(e.target.dataset.filter)
@@ -56,41 +64,77 @@ class MicroCelebrator {
     })
   }
 
+  addTeamMemberInput() {
+    const container = document.getElementById("teamMembersContainer")
+    const newMember = document.createElement("div")
+    newMember.className = "team-member-input"
+    newMember.innerHTML = `
+      <input type="text" class="team-member-name" placeholder="Team member name">
+      <input type="tel" class="team-member-whatsapp" placeholder="+1234567890">
+      <button type="button" class="btn btn-small btn-remove-member">Remove</button>
+    `
+
+    newMember.querySelector(".btn-remove-member").addEventListener("click", (e) => {
+      e.preventDefault()
+      newMember.remove()
+    })
+
+    container.appendChild(newMember)
+  }
+
   handleSetup() {
+    const companyName = document.getElementById("companyName").value.trim()
     const name = document.getElementById("userName").value.trim()
     const email = document.getElementById("userEmail").value.trim()
     const webhook = document.getElementById("slackWebhook").value.trim()
     const whatsapp = document.getElementById("whatsappNumber").value.trim()
 
-    if (!name || !email) {
-      alert("Please fill in your name and email address")
+    if (!companyName || !name || !email || !whatsapp) {
+      alert("Please fill in company name, your name, email, and WhatsApp number")
       return
     }
 
+    const teamMembers = []
+    document.querySelectorAll(".team-member-input").forEach((input) => {
+      const memberName = input.querySelector(".team-member-name").value.trim()
+      const memberWhatsapp = input.querySelector(".team-member-whatsapp").value.trim()
+      if (memberName && memberWhatsapp) {
+        teamMembers.push({ name: memberName, whatsapp: memberWhatsapp })
+      }
+    })
+
+    this.companyName = companyName
     this.userName = name
     this.userEmail = email
     this.slackWebhook = webhook
     this.whatsappNumber = whatsapp
+    this.teamMembers = teamMembers
 
+    localStorage.setItem("companyName", companyName)
     localStorage.setItem("userName", name)
     localStorage.setItem("userEmail", email)
     localStorage.setItem("slackWebhook", webhook)
     localStorage.setItem("whatsappNumber", whatsapp)
+    localStorage.setItem("teamMembers", JSON.stringify(teamMembers))
 
     this.checkSetup()
   }
 
   logout() {
     if (confirm("Are you sure you want to logout?")) {
+      localStorage.removeItem("companyName")
       localStorage.removeItem("userName")
       localStorage.removeItem("userEmail")
       localStorage.removeItem("slackWebhook")
       localStorage.removeItem("whatsappNumber")
+      localStorage.removeItem("teamMembers")
 
+      this.companyName = ""
       this.userName = ""
       this.userEmail = ""
       this.slackWebhook = ""
       this.whatsappNumber = ""
+      this.teamMembers = []
 
       document.getElementById("userSetupForm").reset()
       this.checkSetup()
@@ -177,10 +221,12 @@ class MicroCelebrator {
         },
         body: JSON.stringify({
           text: `🎉 Completed: ${task.title}`,
+          companyName: this.companyName,
           userName: this.userName,
           email: this.userEmail,
           slackWebhook: this.slackWebhook,
           whatsappNumber: this.whatsappNumber,
+          teamMembers: this.teamMembers,
         }),
       })
 
@@ -272,4 +318,4 @@ class MicroCelebrator {
   }
 }
 
-const app = new MicroCelebrator()
+const app = new RealBizDigital()

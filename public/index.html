@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎉 Micro-Milestone Celebrator</title>
+    <!-- Updated title to Real Biz Digital -->
+    <title>Real Biz Digital - Team Celebration Platform</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -11,9 +12,13 @@
     <div class="container">
         <header>
             <div class="header-content">
-                <h1>🎉 Micro-Milestone Celebrator</h1>
-                <!-- Added user profile section with name and logout button -->
+                <!-- Updated header branding to Real Biz Digital -->
+                <div class="logo-section">
+                    <h1>Real Biz Digital</h1>
+                    <p class="tagline">Team Celebration Platform</p>
+                </div>
                 <div id="userProfile" class="user-profile" style="display: none;">
+                    <span id="companyName" class="company-name"></span>
                     <span id="userName" class="user-name"></span>
                     <button id="logoutBtn" class="btn btn-logout">Logout</button>
                 </div>
@@ -22,11 +27,16 @@
 
         <!-- Setup Form (shown first) -->
         <div id="setupForm" class="setup-form">
-            <h2>Setup Your Celebrations</h2>
-            <p>Enter your details to get started with task celebrations!</p>
+            <h2>Welcome to Real Biz Digital</h2>
+            <p>Set up your company account to start celebrating team milestones!</p>
             
             <form id="userSetupForm">
-                <!-- Added name input field -->
+                <!-- Added company name field -->
+                <div class="form-group">
+                    <label for="companyName">Company Name *</label>
+                    <input type="text" id="companyName" required placeholder="Your Company Inc.">
+                </div>
+
                 <div class="form-group">
                     <label for="userName">Your Name *</label>
                     <input type="text" id="userName" required placeholder="John Doe">
@@ -34,7 +44,7 @@
 
                 <div class="form-group">
                     <label for="userEmail">Email Address *</label>
-                    <input type="email" id="userEmail" required placeholder="your@email.com">
+                    <input type="email" id="userEmail" required placeholder="your@company.com">
                 </div>
                 
                 <div class="form-group">
@@ -44,11 +54,24 @@
                     <span class="coming-soon">Coming Soon</span>
                 </div>
 
+                <!-- Removed "Coming Soon" from WhatsApp - now fully functional -->
                 <div class="form-group">
-                    <label for="whatsappNumber">WhatsApp Number</label>
-                    <input type="tel" id="whatsappNumber" placeholder="+1234567890">
-                    <small>Include country code (e.g., +1 for US)</small>
-                    <span class="coming-soon">Coming Soon</span>
+                    <label for="whatsappNumber">WhatsApp Number *</label>
+                    <input type="tel" id="whatsappNumber" required placeholder="+1234567890">
+                    <small>Include country code (e.g., +1 for US). This is where team celebrations will be sent.</small>
+                </div>
+
+                <!-- Added team members section for company use -->
+                <div class="form-group">
+                    <label>Team Members (Optional)</label>
+                    <div id="teamMembersContainer" class="team-members-container">
+                        <div class="team-member-input">
+                            <input type="text" class="team-member-name" placeholder="Team member name">
+                            <input type="tel" class="team-member-whatsapp" placeholder="+1234567890">
+                            <button type="button" class="btn btn-small btn-remove-member" style="display: none;">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" id="addTeamMemberBtn" class="btn btn-secondary">+ Add Team Member</button>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Start Celebrating!</button>
@@ -83,7 +106,7 @@
         </div>
 
         <footer>
-            <p>v1.0.0</p>
+            <p>Real Biz Digital v1.0.0 - Team Celebration Platform</p>
         </footer>
     </div>
 
