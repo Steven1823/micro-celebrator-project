@@ -3,6 +3,7 @@ class MicroCelebrator {
     this.tasks = JSON.parse(localStorage.getItem("tasks")) || []
     this.userEmail = localStorage.getItem("userEmail") || ""
     this.slackWebhook = localStorage.getItem("slackWebhook") || ""
+    this.whatsappNumber = localStorage.getItem("whatsappNumber") || ""
     this.currentFilter = "all"
 
     this.init()
@@ -19,7 +20,7 @@ class MicroCelebrator {
     const setupForm = document.getElementById("setupForm")
     const mainApp = document.getElementById("mainApp")
 
-    if (this.userEmail && this.slackWebhook) {
+    if (this.userEmail) {
       setupForm.style.display = "none"
       mainApp.style.display = "block"
     } else {
@@ -29,19 +30,16 @@ class MicroCelebrator {
   }
 
   bindEvents() {
-    // Setup form
     document.getElementById("userSetupForm").addEventListener("submit", (e) => {
       e.preventDefault()
       this.handleSetup()
     })
 
-    // Task form
     document.getElementById("taskForm").addEventListener("submit", (e) => {
       e.preventDefault()
       this.addTask()
     })
 
-    // Filter buttons
     document.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         this.setFilter(e.target.dataset.filter)
@@ -52,17 +50,20 @@ class MicroCelebrator {
   handleSetup() {
     const email = document.getElementById("userEmail").value.trim()
     const webhook = document.getElementById("slackWebhook").value.trim()
+    const whatsapp = document.getElementById("whatsappNumber").value.trim()
 
-    if (!email || !webhook) {
-      alert("Please fill in both email and Slack webhook URL")
+    if (!email) {
+      alert("Please fill in your email address")
       return
     }
 
     this.userEmail = email
     this.slackWebhook = webhook
+    this.whatsappNumber = whatsapp
 
     localStorage.setItem("userEmail", email)
     localStorage.setItem("slackWebhook", webhook)
+    localStorage.setItem("whatsappNumber", whatsapp)
 
     this.checkSetup()
   }
@@ -87,7 +88,6 @@ class MicroCelebrator {
     this.renderTasks()
     this.updateStats()
 
-    // Clear form
     document.getElementById("taskTitle").value = ""
     document.getElementById("taskDueDate").value = ""
   }
@@ -117,14 +117,12 @@ class MicroCelebrator {
   }
 
   celebrate(task) {
-    // Confetti animation
     window.confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 },
     })
 
-    // Additional confetti burst after a short delay
     setTimeout(() => {
       window.confetti({
         particleCount: 50,
@@ -152,6 +150,7 @@ class MicroCelebrator {
           text: `🎉 Completed: ${task.title}`,
           email: this.userEmail,
           slackWebhook: this.slackWebhook,
+          whatsappNumber: this.whatsappNumber,
         }),
       })
 
@@ -170,7 +169,6 @@ class MicroCelebrator {
   setFilter(filter) {
     this.currentFilter = filter
 
-    // Update active filter button
     document.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.filter === filter)
     })
@@ -244,5 +242,4 @@ class MicroCelebrator {
   }
 }
 
-// Initialize the app
 const app = new MicroCelebrator()

@@ -18,24 +18,31 @@ app.get("/", (req, res) => {
 
 // API route for notifications
 app.post("/api/notify", async (req, res) => {
-  const { text, email, slackWebhook } = req.body
+  const { text, email, slackWebhook, whatsappNumber } = req.body
 
-  if (!text || !email || !slackWebhook) {
-    return res.status(400).json({ error: "Missing required fields: text, email, slackWebhook" })
+  if (!text || !email) {
+    return res.status(400).json({ error: "Missing required fields: text, email" })
   }
 
   try {
-    // Send Slack notification
-    const slackResponse = await fetch(slackWebhook, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text }),
-    })
+    let slackSent = false
+    let emailSent = false
+    let whatsappQueued = false
 
-    if (!slackResponse.ok) {
-      console.error("Slack notification failed:", slackResponse.statusText)
+    // Send Slack notification (if webhook provided)
+    if (slackWebhook) {
+      const slackResponse = await fetch(slackWebhook, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      })
+
+      slackSent = slackResponse.ok
+      if (!slackResponse.ok) {
+        console.error("Slack notification failed:", slackResponse.statusText)
+      }
     }
 
     // Send email notification
@@ -70,15 +77,22 @@ app.post("/api/notify", async (req, res) => {
       }),
     })
 
+    emailSent = emailResponse.ok
     if (!emailResponse.ok) {
       console.error("Email notification failed:", emailResponse.statusText)
+    }
+
+    if (whatsappNumber) {
+      console.log(`[WhatsApp Coming Soon] Would send to: ${whatsappNumber}`)
+      whatsappQueued = true
     }
 
     res.json({
       success: true,
       message: "Notifications sent successfully!",
-      slackSent: slackResponse.ok,
-      emailSent: emailResponse.ok,
+      slackSent,
+      emailSent,
+      whatsappQueued,
     })
   } catch (error) {
     console.error("Notification error:", error)

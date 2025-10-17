@@ -25,9 +25,18 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="slackWebhook">Slack Webhook URL *</label>
-                    <input type="url" id="slackWebhook" required placeholder="https://hooks.slack.com/services/...">
+                    <label for="slackWebhook">Slack Webhook URL</label>
+                    <input type="url" id="slackWebhook" placeholder="https://hooks.slack.com/services/...">
                     <small>Get your webhook URL from Slack's Incoming Webhooks app</small>
+                    <span class="coming-soon">Coming Soon</span>
+                </div>
+
+                <!-- Added WhatsApp number input field -->
+                <div class="form-group">
+                    <label for="whatsappNumber">WhatsApp Number</label>
+                    <input type="tel" id="whatsappNumber" placeholder="+1234567890">
+                    <small>Include country code (e.g., +1 for US)</small>
+                    <span class="coming-soon">Coming Soon</span>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Start Celebrating!</button>
