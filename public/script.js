@@ -1,6 +1,7 @@
 class MicroCelebrator {
   constructor() {
     this.tasks = JSON.parse(localStorage.getItem("tasks")) || []
+    this.userName = localStorage.getItem("userName") || ""
     this.userEmail = localStorage.getItem("userEmail") || ""
     this.slackWebhook = localStorage.getItem("slackWebhook") || ""
     this.whatsappNumber = localStorage.getItem("whatsappNumber") || ""
@@ -19,13 +20,17 @@ class MicroCelebrator {
   checkSetup() {
     const setupForm = document.getElementById("setupForm")
     const mainApp = document.getElementById("mainApp")
+    const userProfile = document.getElementById("userProfile")
 
     if (this.userEmail) {
       setupForm.style.display = "none"
       mainApp.style.display = "block"
+      userProfile.style.display = "flex"
+      document.getElementById("userName").textContent = `Welcome, ${this.userName}!`
     } else {
       setupForm.style.display = "block"
       mainApp.style.display = "none"
+      userProfile.style.display = "none"
     }
   }
 
@@ -33,6 +38,10 @@ class MicroCelebrator {
     document.getElementById("userSetupForm").addEventListener("submit", (e) => {
       e.preventDefault()
       this.handleSetup()
+    })
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      this.logout()
     })
 
     document.getElementById("taskForm").addEventListener("submit", (e) => {
@@ -48,24 +57,44 @@ class MicroCelebrator {
   }
 
   handleSetup() {
+    const name = document.getElementById("userName").value.trim()
     const email = document.getElementById("userEmail").value.trim()
     const webhook = document.getElementById("slackWebhook").value.trim()
     const whatsapp = document.getElementById("whatsappNumber").value.trim()
 
-    if (!email) {
-      alert("Please fill in your email address")
+    if (!name || !email) {
+      alert("Please fill in your name and email address")
       return
     }
 
+    this.userName = name
     this.userEmail = email
     this.slackWebhook = webhook
     this.whatsappNumber = whatsapp
 
+    localStorage.setItem("userName", name)
     localStorage.setItem("userEmail", email)
     localStorage.setItem("slackWebhook", webhook)
     localStorage.setItem("whatsappNumber", whatsapp)
 
     this.checkSetup()
+  }
+
+  logout() {
+    if (confirm("Are you sure you want to logout?")) {
+      localStorage.removeItem("userName")
+      localStorage.removeItem("userEmail")
+      localStorage.removeItem("slackWebhook")
+      localStorage.removeItem("whatsappNumber")
+
+      this.userName = ""
+      this.userEmail = ""
+      this.slackWebhook = ""
+      this.whatsappNumber = ""
+
+      document.getElementById("userSetupForm").reset()
+      this.checkSetup()
+    }
   }
 
   addTask() {
@@ -148,6 +177,7 @@ class MicroCelebrator {
         },
         body: JSON.stringify({
           text: `🎉 Completed: ${task.title}`,
+          userName: this.userName,
           email: this.userEmail,
           slackWebhook: this.slackWebhook,
           whatsappNumber: this.whatsappNumber,

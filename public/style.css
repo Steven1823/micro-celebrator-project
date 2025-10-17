@@ -22,8 +22,15 @@ body {
 }
 
 header {
-  text-align: center;
   margin-bottom: 40px;
+}
+
+/* Added header-content to display title and user profile side by side */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 header h1 {
@@ -31,6 +38,34 @@ header h1 {
   font-weight: 700;
   color: #60a5fa;
   margin-bottom: 10px;
+}
+
+/* Added user-profile styling */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e293b;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.user-name {
+  color: #f1f5f9;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.btn-logout {
+  background: #ef4444;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.btn-logout:hover {
+  background: #dc2626;
 }
 
 .setup-form {
@@ -88,7 +123,6 @@ header h1 {
   font-size: 14px;
 }
 
-/* Added coming-soon badge styling */
 .coming-soon {
   display: inline-block;
   margin-top: 8px;
@@ -287,6 +321,16 @@ footer {
 
   header h1 {
     font-size: 2rem;
+  }
+
+  /* Stack header content vertically on mobile */
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-profile {
+    justify-content: space-between;
   }
 
   .input-group {
