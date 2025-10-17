@@ -6,10 +6,17 @@ require("dotenv").config()
 const app = express()
 const PORT = process.env.PORT || 3000
 
+const twilio = require("twilio")
+
 // Middleware
 app.use(cors())
 app.use(express.json())
 app.use(express.static("public"))
+
+const twilioClient =
+  process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
+    ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
+    : null
 
 // Serve the main HTML file
 app.get("/", (req, res) => {
@@ -27,7 +34,7 @@ app.post("/api/notify", async (req, res) => {
   try {
     let slackSent = false
     let emailSent = false
-    let whatsappQueued = false
+    let whatsappSent = false
 
     // Send Slack notification (if webhook provided)
     if (slackWebhook) {
@@ -82,9 +89,20 @@ app.post("/api/notify", async (req, res) => {
       console.error("Email notification failed:", emailResponse.statusText)
     }
 
-    if (whatsappNumber) {
-      console.log(`[WhatsApp Coming Soon] Would send to: ${whatsappNumber}`)
-      whatsappQueued = true
+    if (whatsappNumber && twilioClient) {
+      try {
+        await twilioClient.messages.create({
+          from: `whatsapp:${process.env.TWILIO_WHATSAPP_NUMBER}`,
+          to: `whatsapp:${whatsappNumber}`,
+          body: `🎉 Congratulations! You've completed a task:\n\n"${text}"\n\nKeep up the great work! Every small step counts towards your bigger goals.\n\n- Micro Celebrator`,
+        })
+        whatsappSent = true
+        console.log(`WhatsApp message sent to ${whatsappNumber}`)
+      } catch (error) {
+        console.error("WhatsApp notification failed:", error.message)
+      }
+    } else if (whatsappNumber && !twilioClient) {
+      console.log(`[WhatsApp] Number provided but Twilio not configured: ${whatsappNumber}`)
     }
 
     res.json({
@@ -92,7 +110,7 @@ app.post("/api/notify", async (req, res) => {
       message: "Notifications sent successfully!",
       slackSent,
       emailSent,
-      whatsappQueued,
+      whatsappSent,
     })
   } catch (error) {
     console.error("Notification error:", error)
