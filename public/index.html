@@ -18,8 +18,8 @@
                     <p class="tagline">Team Celebration Platform</p>
                 </div>
                 <div id="userProfile" class="user-profile" style="display: none;">
-                    <span id="companyName" class="company-name"></span>
-                    <span id="userName" class="user-name"></span>
+                    <span id="profileCompanyName" class="company-name"></span>
+                    <span id="profileUserName" class="user-name"></span>
                     <button id="logoutBtn" class="btn btn-logout">Logout</button>
                 </div>
             </div>
@@ -31,15 +31,16 @@
             <p>Set up your company account to start celebrating team milestones!</p>
             
             <form id="userSetupForm">
-                <!-- Added company name field -->
+                <!-- Renamed ID from companyName to formCompanyName to avoid conflict with profile span -->
                 <div class="form-group">
-                    <label for="companyName">Company Name *</label>
-                    <input type="text" id="companyName" required placeholder="Your Company Inc.">
+                    <label for="formCompanyName">Company Name *</label>
+                    <input type="text" id="formCompanyName" required placeholder="Your Company Inc.">
                 </div>
 
+                <!-- Renamed ID from userName to formUserName to avoid conflict with profile span -->
                 <div class="form-group">
-                    <label for="userName">Your Name *</label>
-                    <input type="text" id="userName" required placeholder="John Doe">
+                    <label for="formUserName">Your Name *</label>
+                    <input type="text" id="formUserName" required placeholder="John Doe">
                 </div>
 
                 <div class="form-group">

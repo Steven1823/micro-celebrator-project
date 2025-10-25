@@ -28,8 +28,8 @@ class RealBizDigital {
       setupForm.style.display = "none"
       mainApp.style.display = "block"
       userProfile.style.display = "flex"
-      document.getElementById("companyName").textContent = `${this.companyName} -`
-      document.getElementById("userName").textContent = `Welcome, ${this.userName}!`
+      document.getElementById("profileCompanyName").textContent = `${this.companyName} -`
+      document.getElementById("profileUserName").textContent = `Welcome, ${this.userName}!`
     } else {
       setupForm.style.display = "block"
       mainApp.style.display = "none"
@@ -83,8 +83,8 @@ class RealBizDigital {
   }
 
   handleSetup() {
-    const companyName = document.getElementById("companyName").value.trim()
-    const name = document.getElementById("userName").value.trim()
+    const companyName = document.getElementById("formCompanyName").value.trim()
+    const name = document.getElementById("formUserName").value.trim()
     const email = document.getElementById("userEmail").value.trim()
     const webhook = document.getElementById("slackWebhook").value.trim()
     const whatsapp = document.getElementById("whatsappNumber").value.trim()
@@ -293,28 +293,15 @@ class RealBizDigital {
                 <div class="task-actions">
                     ${
                       task.completed
-                        ? `<button class="btn btn-small btn-undo" data-task-id="${task.id}" data-action="toggle">Undo</button>`
-                        : `<button class="btn btn-small btn-done" data-task-id="${task.id}" data-action="toggle">Done</button>`
+                        ? `<button class="btn btn-small btn-undo" onclick="app.toggleTask(${task.id})">Undo</button>`
+                        : `<button class="btn btn-small btn-done" onclick="app.toggleTask(${task.id})">Done</button>`
                     }
-                    <button class="btn btn-small btn-delete" data-task-id="${task.id}" data-action="delete">Delete</button>
+                    <button class="btn btn-small btn-delete" onclick="app.deleteTask(${task.id})">Delete</button>
                 </div>
             </div>
         `,
       )
       .join("")
-
-    taskList.querySelectorAll('[data-action]').forEach(button => {
-      button.addEventListener('click', (e) => {
-        const taskId = parseInt(e.target.dataset.taskId)
-        const action = e.target.dataset.action
-
-        if (action === 'toggle') {
-          this.toggleTask(taskId)
-        } else if (action === 'delete') {
-          this.deleteTask(taskId)
-        }
-      })
-    })
   }
 
   updateStats() {
