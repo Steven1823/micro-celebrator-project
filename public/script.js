@@ -293,15 +293,28 @@ class RealBizDigital {
                 <div class="task-actions">
                     ${
                       task.completed
-                        ? `<button class="btn btn-small btn-undo" onclick="app.toggleTask(${task.id})">Undo</button>`
-                        : `<button class="btn btn-small btn-done" onclick="app.toggleTask(${task.id})">Done</button>`
+                        ? `<button class="btn btn-small btn-undo" data-task-id="${task.id}" data-action="toggle">Undo</button>`
+                        : `<button class="btn btn-small btn-done" data-task-id="${task.id}" data-action="toggle">Done</button>`
                     }
-                    <button class="btn btn-small btn-delete" onclick="app.deleteTask(${task.id})">Delete</button>
+                    <button class="btn btn-small btn-delete" data-task-id="${task.id}" data-action="delete">Delete</button>
                 </div>
             </div>
         `,
       )
       .join("")
+
+    taskList.querySelectorAll('[data-action]').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const taskId = parseInt(e.target.dataset.taskId)
+        const action = e.target.dataset.action
+
+        if (action === 'toggle') {
+          this.toggleTask(taskId)
+        } else if (action === 'delete') {
+          this.deleteTask(taskId)
+        }
+      })
+    })
   }
 
   updateStats() {
